@@ -100,24 +100,24 @@ export default function DreamForm({ onNewSession }) {
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <form onSubmit={onSubmit} className="space-y-4 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-6">
+      <form onSubmit={onSubmit} className="space-y-4 bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-xl p-4 sm:p-6">
         {/* Header */}
-        <div className="text-center mb-4">
-          <h2 className="text-2xl font-bold text-[#2C5282] flex items-center justify-center gap-2">
-            <Sparkles className="w-6 h-6" />
+        <div className="text-center mb-3 sm:mb-4">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#2C5282] flex items-center justify-center gap-2">
+            <Sparkles className="w-5 h-5 sm:w-6 sm:h-6" />
             Interpreta tu sueño
           </h2>
-          <p className="text-sm text-[#4A7BA7] mt-1">Describe lo que soñaste y descubre su significado</p>
+          <p className="text-xs sm:text-sm text-[#4A7BA7] mt-1">Describe lo que soñaste y descubre su significado</p>
         </div>
 
         {/* Dream Input */}
         <div>
-          <label className="flex items-center gap-2 text-sm font-medium text-[#5A6B4F] mb-2 ml-1">
-            <Cloud className="w-4 h-4" />
+          <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-[#5A6B4F] mb-2 ml-1">
+            <Cloud className="w-3 h-3 sm:w-4 sm:h-4" />
             Describe tu sueño
           </label>
           <textarea
-            className="w-full h-40 p-4 rounded-2xl bg-[#F0F7FF] border-2 border-transparent text-[#1A365D] placeholder-[#7FA3CC] focus:outline-none focus:border-[#6B9BD1] transition-all resize-none"
+            className="w-full h-32 sm:h-40 p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-[#F0F7FF] border-2 border-transparent text-[#1A365D] placeholder-[#7FA3CC] focus:outline-none focus:border-[#6B9BD1] transition-all resize-none text-sm sm:text-base"
             placeholder="Anoche soñé que volaba sobre una ciudad iluminada..."
             value={texto}
             onChange={(e) => setTexto(e.target.value)}
@@ -127,12 +127,12 @@ export default function DreamForm({ onNewSession }) {
 
         {/* Emotional Context */}
         <div>
-          <label className="flex items-center gap-2 text-sm font-medium text-[#2C5282] mb-2 ml-1">
-            <Heart className="w-4 h-4" />
+          <label className="flex items-center gap-2 text-xs sm:text-sm font-medium text-[#2C5282] mb-2 ml-1">
+            <Heart className="w-3 h-3 sm:w-4 sm:h-4" />
             Contexto emocional (opcional)
           </label>
           <input
-            className="w-full p-3 rounded-xl bg-[#F0F7FF] border-2 border-transparent text-[#1A365D] placeholder-[#7FA3CC] focus:outline-none focus:border-[#6B9BD1] transition-all"
+            className="w-full p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-[#F0F7FF] border-2 border-transparent text-[#1A365D] placeholder-[#7FA3CC] focus:outline-none focus:border-[#6B9BD1] transition-all text-sm sm:text-base"
             placeholder="Alegría, ansiedad, nostalgia, miedo..."
             value={contexto}
             onChange={(e) => setContexto(e.target.value)}
@@ -140,7 +140,7 @@ export default function DreamForm({ onNewSession }) {
         </div>
 
         {/* Save Options */}
-        <div className="flex flex-wrap items-center gap-4 p-4 rounded-xl bg-[#F0F7FF]/50">
+        <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-[#F0F7FF]/50">
           <div className="flex items-center gap-2">
             <input
               id="save"
@@ -149,14 +149,14 @@ export default function DreamForm({ onNewSession }) {
               onChange={(e) => setSave(e.target.checked)}
               className="w-4 h-4 rounded border-[#6B9BD1] text-[#4A7BA7] focus:ring-[#6B9BD1]"
             />
-            <label htmlFor="save" className="flex items-center gap-2 text-sm text-[#2C5282] font-medium cursor-pointer">
-              <Save className="w-4 h-4" />
+            <label htmlFor="save" className="flex items-center gap-2 text-xs sm:text-sm text-[#2C5282] font-medium cursor-pointer">
+              <Save className="w-3 h-3 sm:w-4 sm:h-4" />
               Guardar archivo
             </label>
           </div>
           {save && (
             <input
-              className="flex-1 min-w-[200px] p-2 rounded-lg bg-white border border-[#A8C5E0] text-[#1A365D] placeholder-[#7FA3CC] focus:outline-none focus:border-[#6B9BD1] transition-all"
+              className="flex-1 w-full sm:w-auto sm:min-w-[200px] p-2 rounded-lg bg-white border border-[#A8C5E0] text-[#1A365D] placeholder-[#7FA3CC] focus:outline-none focus:border-[#6B9BD1] transition-all text-sm"
               placeholder="Nombre del archivo (opcional)"
               value={filename}
               onChange={(e) => setFilename(e.target.value)}
@@ -165,20 +165,20 @@ export default function DreamForm({ onNewSession }) {
         </div>
 
         {/* Actions */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="space-y-2 sm:space-y-0 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 min-w-[200px] matcha-gradient text-white font-semibold py-3.5 rounded-xl hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            className="w-full sm:flex-1 sm:min-w-[200px] matcha-gradient text-white font-semibold py-3 sm:py-3.5 rounded-xl hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 text-sm sm:text-base"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">
-                <Loader2 className="w-5 h-5 animate-spin" />
+                <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
                 Interpretando...
               </span>
             ) : (
               <span className="flex items-center justify-center gap-2">
-                <Sparkles className="w-5 h-5" />
+                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
                 Interpretar sueño
               </span>
             )}
@@ -188,46 +188,48 @@ export default function DreamForm({ onNewSession }) {
             type="button"
             onClick={handleGenerateImage}
             disabled={generatingImage || !texto.trim()}
-            className="flex-1 min-w-[200px] matcha-soft text-white font-semibold py-3.5 rounded-xl hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            className="w-full sm:flex-1 sm:min-w-[200px] matcha-soft text-white font-semibold py-3 sm:py-3.5 rounded-xl hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 text-sm sm:text-base"
           >
             {generatingImage ? (
               <span className="flex items-center justify-center gap-2">
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Generando imagen...
+                <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                Generando...
               </span>
             ) : (
               <span className="flex items-center justify-center gap-2">
-                <ImageIcon className="w-5 h-5" />
+                <ImageIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                 Generar imagen
               </span>
             )}
           </button>
           
-          <button
-            type="button"
-            onClick={clearForm}
-            className="px-6 py-3.5 rounded-xl bg-[#D6E7F5] hover:bg-[#C4DCF0] text-[#2C5282] font-medium transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2"
-          >
-            <Trash2 className="w-4 h-4" />
-            Limpiar
-          </button>
-
-          {/* File Import */}
-          <div className="relative">
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".txt"
-              onChange={handleFilePick}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-            />
+          <div className="flex gap-2 sm:gap-3">
             <button
               type="button"
-              className="px-6 py-3.5 rounded-xl matcha-soft text-white font-medium transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2"
+              onClick={clearForm}
+              className="flex-1 sm:flex-none px-4 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-[#D6E7F5] hover:bg-[#C4DCF0] text-[#2C5282] font-medium transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 text-sm sm:text-base"
             >
-              <Paperclip className="w-4 h-4" />
-              Importar .txt
+              <Trash2 className="w-4 h-4" />
+              <span>Limpiar</span>
             </button>
+
+            {/* File Import */}
+            <div className="relative flex-1 sm:flex-none">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".txt"
+                onChange={handleFilePick}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              />
+              <button
+                type="button"
+                className="w-full px-4 sm:px-6 py-3 sm:py-3.5 rounded-xl matcha-soft text-white font-medium transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 text-sm sm:text-base"
+              >
+                <Paperclip className="w-4 h-4" />
+                <span>Importar</span>
+              </button>
+            </div>
           </div>
         </div>
       </form>

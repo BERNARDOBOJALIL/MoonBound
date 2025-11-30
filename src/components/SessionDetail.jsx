@@ -38,24 +38,40 @@ export default function SessionDetail({ sessionId }) {
 
   async function onSend() {
     if (!question.trim()) return;
+    
+    console.log('🔄 Sending follow-up...');
+    console.log('Session ID:', sessionId);
+    console.log('Question:', question.trim());
+    
     setSending(true);
     setError('');
     setLastResponse(null);
     try {
       const result = await sendFollowup(sessionId, question.trim());
-      console.log('Follow-up result:', result);
+      console.log('✅ Follow-up result:', result);
       
       // Mostrar la respuesta inmediatamente si está disponible
       if (result?.respuesta) {
+        console.log('📝 Setting lastResponse');
         setLastResponse({ pregunta: question.trim(), respuesta: result.respuesta });
+      } else {
+        console.warn('⚠️ No respuesta in result:', result);
       }
       
       setQuestion('');
       // Recargar sesión para ver el nuevo follow-up
+      console.log('🔄 Reloading session...');
       await load();
     } catch (e) {
-      console.error('Error en follow-up:', e);
-      setError(e.message || 'Error al enviar seguimiento');
+      console.error('❌ Error en follow-up:', e);
+      const errorMsg = e.message || 'Error al enviar seguimiento';
+      
+      // Mensaje más específico para errores CORS
+      if (errorMsg.includes('CORS') || errorMsg.includes('Failed to fetch')) {
+        setError('Error de conexión con el servidor. Verifica que el backend esté activo y permita peticiones desde este origen.');
+      } else {
+        setError(errorMsg);
+      }
     } finally {
       setSending(false);
     }
@@ -76,18 +92,18 @@ export default function SessionDetail({ sessionId }) {
   return (
     <div className="w-full max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex items-center gap-3 mb-4 p-4 rounded-2xl bg-white/60 backdrop-blur-sm">
-        <div className="flex-1">
-          <h3 className="text-sm font-medium text-[#4A7BA7]">Conversación</h3>
-          <code className="text-xs text-[#7FA3CC] font-mono">{sessionId.slice(0, 8)}...</code>
+      <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/60 backdrop-blur-sm">
+        <div className="flex-1 min-w-0">
+          <h3 className="text-xs sm:text-sm font-medium text-[#4A7BA7]">Conversación</h3>
+          <code className="text-[10px] sm:text-xs text-[#7FA3CC] font-mono truncate block">{sessionId.slice(0, 8)}...</code>
         </div>
         <button 
           onClick={load} 
           disabled={loading} 
-          className="px-4 py-2 rounded-xl bg-[#D6E7F5] hover:bg-[#C4DCF0] disabled:opacity-50 text-[#2C5282] font-medium transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2"
+          className="px-3 sm:px-4 py-2 rounded-lg sm:rounded-xl bg-[#D6E7F5] hover:bg-[#C4DCF0] disabled:opacity-50 text-[#2C5282] font-medium transition-all transform hover:scale-105 active:scale-95 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm"
         >
-          <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-          {loading ? 'Actualizando...' : 'Recargar'}
+          <RefreshCw className={`w-3 h-3 sm:w-4 sm:h-4 ${loading ? 'animate-spin' : ''}`} />
+          <span className="hidden sm:inline">{loading ? 'Actualizando...' : 'Recargar'}</span>
         </button>
       </div>
 
@@ -118,12 +134,12 @@ export default function SessionDetail({ sessionId }) {
           {/* Dream Message (User) */}
           {data.texto_sueno && (
             <div className="flex justify-end fade-in">
-              <div className="max-w-[75%] p-5 rounded-2xl rounded-tr-sm matcha-gradient text-white shadow-lg">
-                <div className="flex items-center gap-2 mb-3">
-                  <Cloud className="w-4 h-4" />
-                  <span className="text-xs font-bold uppercase tracking-wide opacity-90">Tu sueño</span>
+              <div className="max-w-[85%] sm:max-w-[75%] p-4 sm:p-5 rounded-2xl rounded-tr-sm matcha-gradient text-white shadow-lg">
+                <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                  <Cloud className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wide opacity-90">Tu sueño</span>
                 </div>
-                <p className="whitespace-pre-wrap leading-relaxed text-[15px]">{data.texto_sueno}</p>
+                <p className="whitespace-pre-wrap leading-relaxed text-sm sm:text-[15px]">{data.texto_sueno}</p>
               </div>
             </div>
           )}
@@ -234,16 +250,16 @@ export default function SessionDetail({ sessionId }) {
           )}
 
           {/* Input Area (Chat Style) */}
-          <div className="sticky bottom-0 pt-6 mt-6">
-            <div className="p-5 rounded-2xl bg-white shadow-lg border border-[#E8E5DD]">
-              <div className="flex items-center gap-2 mb-3">
-                <HelpCircle className="w-5 h-5 text-[#4A7BA7]" />
-                <h4 className="text-sm font-semibold text-[#2C5282]">Pregunta algo más</h4>
+          <div className="sticky bottom-0 pt-4 sm:pt-6 mt-4 sm:mt-6">
+            <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-white shadow-lg border border-[#E8E5DD]">
+              <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-[#4A7BA7]" />
+                <h4 className="text-xs sm:text-sm font-semibold text-[#2C5282]">Pregunta algo más</h4>
               </div>
               
-              <div className="flex gap-3">
+              <div className="flex gap-2 sm:gap-3">
                 <input
-                  className="flex-1 px-4 py-3 rounded-xl bg-[#F0F7FF] border-2 border-transparent text-[#1A365D] placeholder-[#7FA3CC] focus:outline-none focus:border-[#6B9BD1] transition-all text-[15px]"
+                  className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl bg-[#F0F7FF] border-2 border-transparent text-[#1A365D] placeholder-[#7FA3CC] focus:outline-none focus:border-[#6B9BD1] transition-all text-sm sm:text-[15px]"
                   placeholder="¿Qué significa...?"
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
@@ -252,12 +268,12 @@ export default function SessionDetail({ sessionId }) {
                 <button 
                   onClick={onSend} 
                   disabled={sending || !question.trim()} 
-                  className="px-5 py-3 rounded-xl matcha-gradient text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 active:scale-95 shadow-md flex items-center gap-2"
+                  className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg sm:rounded-xl matcha-gradient text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-105 active:scale-95 shadow-md flex items-center gap-2"
                 >
                   {sending ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
                   ) : (
-                    <Send className="w-5 h-5" />
+                    <Send className="w-4 h-4 sm:w-5 sm:h-5" />
                   )}
                 </button>
               </div>
